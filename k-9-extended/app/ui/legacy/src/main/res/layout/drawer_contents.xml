@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/material_drawer_swipe_refresh"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="start">
+
+    <com.mikepenz.materialdrawer.widget.MaterialDrawerSliderView
+        android:id="@+id/material_drawer_slider"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

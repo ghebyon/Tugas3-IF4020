@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application>
+
+        <!--
+        This component is disabled by default. It will be enabled programmatically by SystemLocaleManager if necessary.
+        -->
+        <receiver
+            android:name=".locale.LocaleBroadcastReceiver"
+            android:exported="false"
+            android:enabled="false">
+            <intent-filter>
+                <action android:name="android.intent.action.LOCALE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>

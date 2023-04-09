@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackground">
+
+    <Space
+        android:id="@+id/margin_start"
+        android:layout_width="@dimen/messageListHorizontalPadding"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/selected"
+        android:layout_width="@dimen/messageListContactPictureSize"
+        android:layout_height="@dimen/messageListContactPictureSize"
+        android:layout_marginStart="@dimen/messageListHorizontalPadding"
+        android:layout_marginTop="@dimen/fakeAlignImageTopToTextTopPadding"
+        android:contentDescription="@null"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/top_guideline"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_check_circle_large" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/contact_picture"
+        android:layout_width="@dimen/messageListContactPictureSize"
+        android:layout_height="@dimen/messageListContactPictureSize"
+        android:layout_marginStart="@dimen/messageListHorizontalPadding"
+        android:layout_marginTop="@dimen/fakeAlignImageTopToTextTopPadding"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/top_guideline"
+        app:layout_constraintVertical_bias="0.0"
+        tools:src="@drawable/ic_contact_picture" />
+
+    <TextView
+        android:id="@+id/preview"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/messageListDefaultTextViewMargin"
+        android:layout_marginEnd="8dp"
+        android:bufferType="spannable"
+        android:lineSpacingMultiplier="@dimen/messageListDefaultLineSpacingMultiplier"
+        android:singleLine="false"
+        android:textAppearance="@style/TextAppearance.K9.Small"
+        app:layout_constraintBottom_toBottomOf="@+id/bottom_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/star"
+        app:layout_constraintStart_toEndOf="@+id/barrier_start"
+        app:layout_constraintTop_toTopOf="@+id/barrier_first_line_bottom"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_goneMarginEnd="@dimen/messageListHorizontalPadding"
+        tools:maxLines="2"
+        tools:text="Sender – Message preview text that can span multiple lines. Users can specify in settings how much of that is displayed."
+        tools:textColor="?attr/messageListPreviewTextColor" />
+
+    <ImageView
+        android:id="@+id/account_color_chip"
+        android:layout_width="7dp"
+        android:layout_height="12dp"
+        android:paddingStart="0dp"
+        android:paddingEnd="4dp"
+        android:contentDescription="@null"
+        app:layout_constraintBottom_toBottomOf="@+id/subject"
+        app:layout_constraintStart_toEndOf="@+id/barrier_start"
+        app:layout_constraintTop_toTopOf="@+id/subject"
+        app:srcCompat="@drawable/ic_account_color"
+        tools:tint="@color/material_blue_700" />
+
+    <ImageView
+        android:id="@+id/status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/account_color_chip"
+        app:layout_constraintTop_toTopOf="@+id/top_guideline"
+        app:srcCompat="?attr/messageListAnswered" />
+
+    <TextView
+        android:id="@+id/subject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="6dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textAppearance="@style/TextAppearance.K9.MediumSmall"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintEnd_toStartOf="@+id/thread_count"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toEndOf="@+id/status"
+        app:layout_constraintTop_toTopOf="@+id/top_guideline"
+        tools:text="Subject"
+        tools:textColor="?attr/messageListReadTextColor" />
+
+    <TextView
+        android:id="@+id/thread_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:focusable="false"
+        android:textAppearance="@style/TextAppearance.K9.Small"
+        android:textColor="?attr/messageListThreadCountTextColor"
+        app:layout_constraintBaseline_toBaselineOf="@+id/subject"
+        app:layout_constraintEnd_toStartOf="@+id/attachment"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/subject"
+        app:layout_goneMarginEnd="8dp"
+        tools:text="3" />
+
+    <ImageView
+        android:id="@+id/attachment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/date"
+        app:layout_constraintTop_toTopOf="@+id/top_guideline"
+        app:srcCompat="?attr/messageListAttachment" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/messageListHorizontalPadding"
+        android:singleLine="true"
+        android:textAppearance="@style/TextAppearance.K9.Small"
+        android:textColor="?android:attr/textColorSecondary"
+        app:layout_constraintBaseline_toBaselineOf="@+id/subject"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Oct 27" />
+
+    <ImageView
+        android:id="@+id/star"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/fakeAlignImageTopToTextTopPadding"
+        android:layout_marginEnd="@dimen/messageListHorizontalPadding"
+        android:src="@drawable/btn_select_star"
+        app:layout_constraintBottom_toBottomOf="@+id/bottom_guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/preview"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/start_keyline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="72dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/top_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/messageListDefaultVerticalPadding" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottom_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="@dimen/messageListDefaultVerticalPadding" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_first_line_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="subject,date,thread_count,status,attachment,account_color_chip" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="margin_start,contact_picture_click_area" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/contact_picture_click_area" />
+
+    <View
+        android:id="@+id/star_click_area"
+        android:layout_width="48dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/contact_picture_click_area"
+        android:layout_width="@dimen/messageListStartKeyline"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.fsck.k9.view.MessageHeader xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/header_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/account_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:clickable="false"
+            android:paddingVertical="4sp"
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            app:chipMinHeight="0dp"
+            app:ensureMinTouchTargetSize="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:textEndPadding="6sp"
+            app:textStartPadding="8sp"
+            tools:chipBackgroundColor="#1976D2"
+            tools:text="Account name" />
+
+        <com.fsck.k9.ui.helper.BottomBaselineTextView
+            android:id="@+id/subject"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/account_name"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="20sp"
+            app:layout_goneMarginTop="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/flagged"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/account_name"
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="Message subject" />
+
+        <ImageView
+            android:id="@+id/flagged"
+            android:layout_width="44dp"
+            android:layout_height="48dp"
+            android:background="?attr/controlBackground"
+            android:baseline="33dp"
+            android:paddingHorizontal="12dp"
+            android:src="@drawable/btn_select_star"
+            app:layout_constraintBaseline_toBaselineOf="@+id/subject"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/participants_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/messageHeaderBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/contact_picture"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/ic_contact_picture" />
+
+        <TextView
+            android:id="@+id/from"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="?android:attr/textColorPrimary"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toStartOf="@+id/date"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@id/contact_picture"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Sender name" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:ellipsize="none"
+            android:singleLine="true"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:textColor="?android:attr/textColorSecondary"
+            app:layout_constraintBaseline_toBaselineOf="@+id/from"
+            app:layout_constraintEnd_toStartOf="@+id/menu_primary_action"
+            app:layout_constraintStart_toEndOf="@id/from"
+            tools:text="Sep 19" />
+
+        <ImageView
+            android:id="@+id/crypto_status_icon"
+            android:layout_width="18sp"
+            android:layout_height="18sp"
+            android:layout_marginStart="16dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/recipients"
+            app:layout_constraintStart_toEndOf="@id/contact_picture"
+            app:srcCompat="@drawable/status_lock_disabled"
+            app:tint="?attr/openpgp_grey"
+            tools:visibility="visible" />
+
+        <com.fsck.k9.ui.messageview.RecipientNamesView
+            android:id="@+id/recipients"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/menu_primary_action"
+            app:layout_constraintStart_toEndOf="@id/crypto_status_icon"
+            app:layout_constraintTop_toBottomOf="@+id/from"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_goneMarginStart="16dp" />
+
+        <ImageView
+            android:id="@+id/menu_primary_action"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/controlBackground"
+            android:paddingHorizontal="12dp"
+            app:layout_constraintEnd_toStartOf="@id/menu_overflow"
+            app:layout_constraintTop_toTopOf="@+id/menu_overflow"
+            tools:srcCompat="@drawable/ic_reply_all" />
+
+        <ImageView
+            android:id="@+id/menu_overflow"
+            android:layout_width="40dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="?attr/controlBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingStart="6dp"
+            android:paddingEnd="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/dots_vertical" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.fsck.k9.view.MessageHeader>

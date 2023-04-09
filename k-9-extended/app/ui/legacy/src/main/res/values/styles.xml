@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ComposeTextLabel" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">#aaa</item>
+    </style>
+    <style name="ComposeEditText" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColorHint">#aaa</item>
+    </style>
+    <style name="RecipientEditText" parent="ComposeEditText">
+        <item name="android:lineSpacingExtra">4dp</item>
+    </style>
+    <style name="ComposeEditTextLarge" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textColorHint">#aaa</item>
+    </style>
+
+    <style name="MessageComposeHighlight">
+        <item name="highlightBackgroundColor">#99444444</item>
+    </style>
+
+    <style name="PositiveBulletPoint">
+        <item name="srcCompat">@drawable/bullet_point_positive</item>
+        <item name="android:tint">?attr/tintColorBulletPointPositive</item>
+    </style>
+
+    <style name="NeutralBulletPoint">
+        <item name="srcCompat">@drawable/bullet_point_neutral</item>
+        <item name="android:tint">?attr/tintColorBulletPointNeutral</item>
+    </style>
+
+    <style name="NegativeBulletPoint">
+        <item name="srcCompat">@drawable/bullet_point_negative</item>
+        <item name="android:tint">?attr/tintColorBulletPointNegative</item>
+    </style>
+
+    <style name="InputLabel" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:paddingBottom">@dimen/input_label_vertical_spacing</item>
+        <item name="android:paddingLeft">@dimen/input_label_horizontal_spacing</item>
+        <item name="android:paddingRight">@dimen/input_label_horizontal_spacing</item>
+        <item name="android:textColor">?android:attr/textColorHint</item>
+    </style>
+
+    <style name="Widget.MaterialDrawerStyle.K9" parent="Widget.MaterialDrawerStyle">
+        <item name="materialDrawerBackground">?android:colorBackground</item>
+        <item name="materialDrawerPrimaryText">?android:textColorPrimary</item>
+        <item name="materialDrawerPrimaryIcon">?android:textColorSecondary</item>
+        <item name="materialDrawerSecondaryText">?android:textColorSecondary</item>
+        <item name="materialDrawerSecondaryIcon">?android:textColorSecondary</item>
+        <item name="materialDrawerSelectedBackgroundColor">?colorAccent</item>
+    </style>
+
+    <style name="Widget.MaterialDrawerStyle.K9.Light" parent="Widget.MaterialDrawerStyle.K9">
+        <item name="materialDrawerInsetForeground">@android:color/transparent</item>
+        <item name="materialDrawerDividerColor">#eee</item>
+    </style>
+
+    <style name="Widget.MaterialDrawerStyle.K9.Dark" parent="Widget.MaterialDrawerStyle.K9">
+        <item name="materialDrawerInsetForeground">@android:color/transparent</item>
+        <item name="materialDrawerDividerColor">#444</item>
+    </style>
+
+    <style name="Widget.MaterialDrawerHeaderStyle.K9">
+        <item name="materialDrawerCompactStyle">false</item>
+    </style>
+
+    <style name="Widget.MaterialDrawerHeaderStyle.K9.Light" parent="Widget.MaterialDrawerHeaderStyle.K9">
+        <item name="materialDrawerHeaderSelectionText">?android:textColorPrimaryInverse</item>
+        <item name="materialDrawerHeaderSelectionSubtext">?android:textColorSecondaryInverse</item>
+    </style>
+
+    <style name="Widget.MaterialDrawerHeaderStyle.K9.Dark" parent="Widget.MaterialDrawerHeaderStyle.K9">
+        <item name="materialDrawerHeaderSelectionText">?android:textColorPrimary</item>
+        <item name="materialDrawerHeaderSelectionSubtext">?android:textColorSecondary</item>
+    </style>
+
+    <style name="TextAppearance.K9.Small" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextAppearance.K9.MediumSmall" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextAppearance.K9.Medium" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TextAppearance.K9.MediumLarge" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="TextAppearance.K9.Large" parent="TextAppearance.AppCompat.Large">
+        <item name="android:textSize">22sp</item>
+    </style>
+
+    <style name="AttachmentView" parent="">
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="AttachmentCard" parent="">
+        <item name="android:layout_width">match_parent</item>
+    </style>
+
+    <style name="Widget.K9.Toolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="android:background">?attr/toolbarColor</item>
+        <item name="titleTextColor">?android:attr/textColorPrimary</item>
+        <item name="subtitleTextColor">?android:attr/textColorSecondary</item>
+        <item name="android:theme">@style/ThemeOverlay.K9.Toolbar</item>
+    </style>
+
+    <style name="ThemeOverlay.K9.Toolbar" parent="">
+        <item name="colorControlNormal">?android:attr/textColorSecondary</item>
+        <item name="actionMenuTextColor">?android:attr/textColorSecondary</item>
+    </style>
+
+    <style name="Widget.K9.Button.Snackbar" parent="Widget.MaterialComponents.Button.TextButton.Snackbar">
+        <item name="android:textColor">?attr/colorSecondary</item>
+    </style>
+
+</resources>
+
