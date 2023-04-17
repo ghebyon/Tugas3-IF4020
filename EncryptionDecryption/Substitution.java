@@ -2,6 +2,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 
 public class Substitution {
   
@@ -20,7 +21,9 @@ public class Substitution {
     }
 
     for (int i = 0; i < size; i++) {
-      byte[] bytes = (seed + (char) i).getBytes();
+      byte[] bytes = seed.getBytes();
+      bytes = Arrays.copyOf(bytes, bytes.length + 1);
+      bytes[bytes.length-1] = (byte) i;
       byte[] hash = digest.digest(bytes);
       String hashString = bytesToHex(hash);
       int candidateElmt = Integer.parseInt(hashString.substring(0, 2), 16);

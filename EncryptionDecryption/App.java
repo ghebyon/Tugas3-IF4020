@@ -1,8 +1,14 @@
-import java.util.*;;
+import java.util.*;
+import java.nio.charset.StandardCharsets;
+
 public class App {
     public static void main(String[] args) throws Exception {
        KeyExpansion kExpansion = new KeyExpansion("H-2 Menuju UTS Semangat Gaes!", 16);
        kExpansion.makeRoundKey();
+        // for(int i = 0; i < kExpansion.roundKey.size(); i++){
+        //         System.out.println(kExpansion.roundKey.get(i));
+        // }
+
        Permutation permutation = new Permutation();
         // for(int i = 0; i < kExpansion.roundKey.size(); i++){
         //     System.out.println(kExpansion.roundKey.get(i).substring(2, kExpansion.roundKey.get(i).length()));
@@ -38,7 +44,7 @@ public class App {
         System.out.println(new String(roundFunction.ciphertext));
         RoundFunction roundFunction1 = new RoundFunction(roundFunction.ciphertext, kExpansion.roundKey, 16, false);
         roundFunction1.decrypt();
-        System.out.println(new String(roundFunction1.plaintext));
+        System.out.println(new String(roundFunction.plaintext, StandardCharsets.UTF_8));
     }
 }
 // 

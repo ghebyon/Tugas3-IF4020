@@ -1,6 +1,7 @@
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class KeyExpansion {
@@ -42,8 +43,7 @@ public class KeyExpansion {
     this.rawCurrentKey[3] = temp;
   }
 
-  private void generateSBox(){
-    List<Integer> temp_box = new ArrayList<>();
+  public void generateSBox(){
     MessageDigest digest = null;
     try{
       digest = MessageDigest.getInstance("SHA-256");
@@ -52,20 +52,20 @@ public class KeyExpansion {
     }
 
     for (int i = 0; i < 256; i++) {
-      byte[] bytes = (this.seed + (char) i).getBytes();
+      byte[] bytes = this.seed.getBytes();
+      bytes = Arrays.copyOf(bytes, bytes.length + 1);
+      bytes[bytes.length-1] = (byte) i;
       byte[] hash = digest.digest(bytes);
       String hashString = bytesToHex(hash);
       int candidateElmt = Integer.parseInt(hashString.substring(0, 2), 16);
-      if (!temp_box.contains(candidateElmt)) {
+      if (!this.s_box.contains(candidateElmt)) {
           this.s_box.add(candidateElmt);
-          temp_box.add(candidateElmt);
       }
     }
     
     for (int i = 0; i < 256; i++) {
-        if (!temp_box.contains(i)) {
+        if (!this.s_box.contains(i)) {
             this.s_box.add(i);
-            temp_box.add(i);
         }
     }
   }
