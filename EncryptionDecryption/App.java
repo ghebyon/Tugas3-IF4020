@@ -61,7 +61,7 @@ public class App {
         System.out.println(new String(roundFunction.ciphertext));
         RoundFunction roundFunction1 = new RoundFunction(roundFunction.ciphertext, kExpansion.roundKey, 16, false);
         roundFunction1.decrypt();
-        System.out.println(new String(roundFunction.plaintext, StandardCharsets.UTF_8));
+        System.out.println(new String(roundFunction1.plaintext, StandardCharsets.UTF_8));
 
         // byte[] cipher = new byte[0];
         // while (true){

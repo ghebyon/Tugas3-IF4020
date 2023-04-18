@@ -1,4 +1,5 @@
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
@@ -78,18 +79,17 @@ public class RoundFunction {
   
   public byte[] feistelRound(byte[] input){
     if(this.mode){ //encrypt
-      int halfLen = this.plaintext.length / 2;
+      int halfLen = Math.floorDiv(this.plaintext.length, 2);
       byte[] leftPlain = Arrays.copyOfRange(input, 0, halfLen);
       byte[] rightPlain = Arrays.copyOfRange(input, halfLen, this.plaintext.length);
       byte[] cipher = new byte[this.plaintext.length];
-
       byte[] xorResult = xorBytes(this.roundFunction(rightPlain), leftPlain);
       cipher = concat(rightPlain, xorResult);
 
       return cipher;
 
     }else{
-      int halfLen = this.ciphertext.length / 2;
+      int halfLen = Math.floorDiv(this.ciphertext.length, 2);
       byte[] leftCipher = Arrays.copyOfRange(input, 0, halfLen);
       byte[] rightCipher = Arrays.copyOfRange(input, halfLen, this.ciphertext.length);
       byte[] plain = new byte[this.ciphertext.length];
@@ -114,9 +114,15 @@ public class RoundFunction {
 
 
   public byte[] switchBits(byte[] input){
+    byte[] result = new byte[16];
     BigInteger evenPair = (new BigInteger(1, input)).and(new BigInteger("CCCCCCCCCCCCCCCC", 16));
     BigInteger oddPair = (new BigInteger(1, input)).and(new BigInteger("3333333333333333", 16));
-    byte[] result = (evenPair.shiftRight(1).or(oddPair.shiftLeft(1))).toByteArray();
+    byte[] temp = (evenPair.shiftRight(1).or(oddPair.shiftLeft(1))).toByteArray();
+    int idxRes = result.length-1;
+    for(int i = temp.length - 1; i >= 0; i--){
+      result[idxRes] = temp[i];
+      idxRes--;
+    }
     return result;
   }
 
@@ -127,13 +133,18 @@ public class RoundFunction {
 
     for (int i = 0; i < inputInt.bitLength(); i+= 4){
       int chunk1 = inputInt.shiftRight(i).and(new BigInteger("1111", 2)).intValue();
-      int chunk2 = inputInt.shiftRight(((i - 4) % 64)).and(new BigInteger("1111", 2)).intValue();
+      int shifted = ((i - 4) % 64);
+      if(i == 0){
+        shifted = 60;
+      }
+      int chunk2 = inputInt.shiftRight(shifted).and(new BigInteger("1111", 2)).intValue();
       int subtext1 = chunk1;
       int subtext2 = chunk1 ^ chunk2;
       
       byte[] bytes = new byte[]{(byte) ((subtext1 << 4) + subtext2)};
       expanded = concat(expanded, bytes);
     }
+
     expanded = reverseByte(expanded);
     return expanded;
   }
@@ -149,6 +160,7 @@ public class RoundFunction {
       byte[] bytes = new byte[]{(byte) (Integer.parseInt(S_BOX[index], 16))};
       result = concat(result, bytes);
     }
+    
 
     result = reverseByte(result);
     return result;
