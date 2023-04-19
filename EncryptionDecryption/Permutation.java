@@ -27,11 +27,13 @@ public class Permutation {
 
     for (int i = 0; i <  size; i++){
       byte[] bytes = (seed + (char) i).getBytes();
+      bytes = Arrays.copyOf(bytes, bytes.length + 1);
+      bytes[bytes.length-1] = (byte) i;
       byte[] hash = digest.digest(bytes);
       String hashString = bytesToHex(hash);
 
-      BigDecimal bigDecimal = new BigDecimal(new BigInteger(hashString, 16));
-      BigDecimal bdJ = bigDecimal.remainder(new BigDecimal(size-i));
+      BigInteger bigInteger = new BigInteger(hashString, 16);
+      BigInteger bdJ = bigInteger.remainder(BigInteger.valueOf(size-i));
 
       int j = bdJ.intValue();
       int temp = p_box.get(i);
@@ -57,18 +59,18 @@ public class Permutation {
           string_bit_builder.append(String.format("%8s", Integer.toBinaryString(b & 0xFF)).replace(' ', '0'));
       }
       String string_bit = string_bit_builder.toString();
+      
 
       StringBuilder permuted_block_builder = new StringBuilder();
       for (int i = 0; i < p_box.size(); i++) {
         int idxTemp = p_box.get(i)-1;
         if(idxTemp == -1){
-          idxTemp = p_box.size()-1;
+          idxTemp = string_bit.length()-1;
         }
         permuted_block_builder.append(string_bit.charAt(idxTemp));
       }
       String permuted_block = permuted_block_builder.toString();
-
-      byte[] result_byte_string = new byte[byte_list.length];
+      byte[] result_byte_string = new byte[permuted_block.length()/8];
       for (int i = 0; i < result_byte_string.length; i++) {
           String bit = permuted_block.substring(i*8, i*8+8);
           result_byte_string[i] = (byte) Integer.parseInt(bit, 2);
@@ -89,6 +91,7 @@ public class Permutation {
     }
     String string_bit = string_bit_builder.toString();
     
+    
     char[] backagainBlock = new char[128];
     Arrays.fill(backagainBlock, '0');
     for (int i = 0; i < p_box.size(); i++) {
@@ -101,6 +104,7 @@ public class Permutation {
     
     String resultStringBit = new String(backagainBlock);
     
+
     List<String> bitList = new ArrayList<String>();
     for (int i = 0; i < resultStringBit.length(); i += 8) {
         bitList.add(resultStringBit.substring(i, Math.min(i + 8, resultStringBit.length())));
