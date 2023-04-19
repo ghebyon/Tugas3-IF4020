@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.fsck.k9.ui.messageview.MessageContainerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -54,7 +55,11 @@
                 android:background="#d55" />
 
         </LinearLayout>
-
+        <Switch
+            android:id="@+id/switchDecrypt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Decrypt" />
         <TextView
             android:id="@+id/message_unsigned_text"
             android:layout_height="wrap_content"
@@ -62,6 +67,37 @@
             android:padding="8dp"
             tools:text="Unsigned text content"
             />
+        <EditText
+            android:id="@+id/verifPublicKey"
+            style="@style/ComposeEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text"
+            android:imeOptions="actionNext|flagNoExtractUi"
+            android:hint="Input your public key"
+            android:singleLine="true"
+            android:background="@android:color/transparent"/>
+
+
+
+
+        <Button
+            android:id="@+id/verifButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Verify"
+            android:layout_marginHorizontal="100dp"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/decryptedVerifyMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            tools:visibility="gone"/>
+
+
 
     </LinearLayout>
 
@@ -71,5 +107,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" />
+
+
+
 
 </com.fsck.k9.ui.messageview.MessageContainerView>
