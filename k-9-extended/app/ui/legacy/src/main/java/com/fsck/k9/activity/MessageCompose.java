@@ -32,6 +32,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -40,6 +41,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewStub;
 import android.view.Window;
+import android.view.inputmethod.EditorInfo;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -119,6 +121,7 @@ import com.fsck.k9.ui.permissions.K9PermissionUiHelper;
 import com.fsck.k9.ui.permissions.Permission;
 import com.fsck.k9.ui.permissions.PermissionUiHelper;
 
+import com.google.android.material.textfield.TextInputEditText;
 import org.jetbrains.annotations.NotNull;
 import org.openintents.openpgp.OpenPgpApiManager;
 import org.openintents.openpgp.util.OpenPgpApi;
@@ -248,8 +251,17 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
 
     private Switch encryptedSwitch;
+    private Switch signatureSwitch;
 
-    private  boolean isEncrypted;
+    private TextInputEditText privateKeySignatureInput;
+    private TextInputEditText keyEncryptionInput;
+
+    private boolean isEncrypted;
+    private boolean isSignatured;
+
+    private String keyEncryption;
+    private String privateKeySignature;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -496,6 +508,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         this.encryptedSwitch = (Switch) findViewById(R.id.switchEncrypt);
+<<<<<<< Updated upstream
+=======
+        this.keyEncryptionInput = (TextInputEditText) findViewById(R.id.keyEncryptInput);
+>>>>>>> Stashed changes
 
         this.encryptedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -503,6 +519,42 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 isEncrypted = isChecked; // assign isChecked to the global variable switchState
             }
         });
+        if (isEncrypted) {
+            keyEncryptionInput.setVisibility(View.VISIBLE);
+            keyEncryptionInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        keyEncryption = keyEncryptionInput.getText().toString();
+                        return true;
+                    }
+                    return false;
+                }
+            });
+        }
+
+        this.signatureSwitch = (Switch) findViewById(R.id.switchSignature);
+        this.privateKeySignatureInput = (TextInputEditText) findViewById(R.id.privateKeySignatureInput);
+
+        this.signatureSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isSignatured = isChecked; // assign isChecked to the global variable switchState
+            }
+        });
+        if (isSignatured) {
+            keyEncryptionInput.setVisibility(View.VISIBLE);
+            privateKeySignatureInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        privateKeySignature = privateKeySignatureInput.getText().toString();
+                        return true;
+                    }
+                    return false;
+                }
+            });
+        }
     }
 
     /**
