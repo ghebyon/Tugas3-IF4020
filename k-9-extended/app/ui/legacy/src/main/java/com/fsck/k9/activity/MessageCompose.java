@@ -495,7 +495,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             checkAndRequestPermissions();
         }
 
-        this.encryptedSwitch = (Switch) findViewById(R.id.switch2);
+        this.encryptedSwitch = (Switch) findViewById(R.id.switchEncrypt);
 
         this.encryptedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
