@@ -13,6 +13,7 @@ plugins {
     id("thunderbird.quality.spotless")
     id("thunderbird.quality.detekt")
     id("thunderbird.dependency.check")
+    id("com.chaquo.python") version ("14.0.2") apply false
 }
 
 val propertyTestCoverage: String? by extra

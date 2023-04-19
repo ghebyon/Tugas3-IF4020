@@ -2,6 +2,7 @@
 plugins {
     id(ThunderbirdPlugins.Library.android)
     alias(libs.plugins.kotlin.parcelize)
+    id("com.chaquo.python")
 }
 
 dependencies {
@@ -49,5 +50,11 @@ android {
 
     buildFeatures {
         buildConfig = true
+    }
+
+    defaultConfig {
+        ndk {
+            abiFilters += listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64")
+        }
     }
 }

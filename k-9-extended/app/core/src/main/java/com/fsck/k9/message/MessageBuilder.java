@@ -7,12 +7,17 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.fsck.k9.CoreResourceProvider;
 import com.fsck.k9.mail.internet.AddressHeaderBuilder;
 import com.fsck.k9.mail.internet.Headers;
+
+import retrofit2.Call;
+import retrofit2.Response;
 import timber.log.Timber;
 
 import com.fsck.k9.Account.QuoteStyle;
@@ -34,6 +39,9 @@ import com.fsck.k9.mail.internet.MimeMultipart;
 import com.fsck.k9.mail.internet.MimeUtility;
 import com.fsck.k9.mail.internet.TextBody;
 import com.fsck.k9.mailstore.TempFileBody;
+import com.fsck.k9.message.apicrypto.RetrofitClient;
+import com.fsck.k9.message.apicrypto.encrypt;
+import com.fsck.k9.message.python.GetCrypto;
 import com.fsck.k9.message.quote.InsertableHtmlContent;
 import org.apache.james.mime4j.util.MimeUtil;
 
@@ -423,8 +431,10 @@ public abstract class MessageBuilder {
         return this;
     }
 
-    public MessageBuilder setText(String text) {
-        this.text = text;
+    public MessageBuilder setText(String text, Context context) {
+        GetCrypto getCrypto = new GetCrypto(context);
+        String encrypted = getCrypto.runPythonScript(text, "if4020-kriptografi2023");
+        this.text = encrypted;
         return this;
     }
 
