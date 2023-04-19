@@ -1,4 +1,5 @@
 import math
+import sys
 from typing import List
 
 # Round Constant
@@ -10,6 +11,7 @@ RC = [0x0000000000000001, 0x0000000000008082, 0x800000000000808A,
       0x8000000000008003, 0x8000000000008002, 0x8000000000000080,
       0x000000000000800A, 0x800000008000000A, 0x8000000080008081,
       0x8000000000008080, 0x0000000080000001, 0x8000000080008008]
+
 ROT_OFFSET = [
     [0, 36, 3, 41, 18],
     [1, 44, 10, 45, 2],
@@ -17,27 +19,32 @@ ROT_OFFSET = [
     [28, 55, 25, 21, 56],
     [27, 20, 39, 8, 14]
 ]
-def Keccak(message : str):
+
+def printBytesInList(val : bytes):
+    list = []
+    for x in val:
+        list.append(x)
+    print(list)
+
+def Keccak(message : str, ):
     # SHA3-256
     digest = 256
     r = 1088
     c = 512
     w = 360 # bisa dipilih sebebasnya, tapi pada keccak pada umumnya64
     # Padding
-    Mbits = bin(int.from_bytes(message.encode(), byteorder='big'))[2:]
-
+    Mbits = bin(int.from_bytes(message.encode(), byteorder='little'))[2:]
     Mbytes = message.encode()
-
-    d = 2 ** len(Mbits) + sum([2**i * int(Mbits[i]) for i in range(len(Mbits))]) # kalau index ke i mulai dari depan
     
-    P = Mbytes + d.to_bytes((d.bit_length() + 7) // 8, 'big')
-
+    
+    d = 2 ** len(Mbits) + sum([2**i * int(Mbits[i]) for i in range(len(Mbits))]) # kalau index ke i mulai dari depan
+    P = Mbytes + d.to_bytes((d.bit_length() + 7) // 8, 'little')
+    
     P = P + bytes((r//8) * math.ceil(len(P)/(r//8)) - len(P)) # Beri padding 0 sehingga P berukuran kelipatan r
     P = P[:len(P)-1] + bytes([P[len(P)-1] ^ 0x80]) # ini udah benarkah meletakkan \x80 di akhir (atau di depan?)
 
     # Initialization
     S = [[0 for i in range(5)] for j in range(5)]
-    
 
     # Memecah (P message + padding) menjadi block berukuran r    
     P_blocks = []
@@ -55,7 +62,7 @@ def Keccak(message : str):
             j = 0
             while (j < len(S[0]) and countFlatten < len(P_block)//8): 
                 if (i+5*j < r/w):
-                    S[i][j] = S[i][j] ^ int.from_bytes(P_block[idxStartP_block:idxStartP_block+8], 'big')
+                    S[i][j] = S[i][j] ^ int.from_bytes(P_block[idxStartP_block:idxStartP_block+8], 'little')
                 j += 1
                 countFlatten += 1
                 idxStartP_block += 8
@@ -64,16 +71,20 @@ def Keccak(message : str):
 
         # Masuk ke round function f
         S = KeccakPermutation(S,r+c)
-
     Z = b""
     countFlatten = 0
+    count = 0
     while (len(Z) < (digest//8)):
         i = 0
         while (i < len(S) and countFlatten < (r//8)//8 and len(Z) < (digest//8)):
+
             j = 0
             while (j < len(S[0]) and countFlatten < (r//8)//8 and len(Z) < (digest//8)):
                 if (i+5*j < r/w):
-                   Z += S[i][j].to_bytes((S[i][j].bit_length() + 7) // 8, 'big')
+                    count+=1
+
+                    Z += S[i][j].to_bytes((S[i][j].bit_length() + 7) // 8, 'little')
+
                 countFlatten += 1
                 j+=1
             i+=1
@@ -119,5 +130,7 @@ def KeccakRound(A : List[List[int]], RCnow, b:int):
 def rot(x, y):
     return ((x << y) | (x >> (64 - y))) % (1 << 64)
 
-result = Keccak("")
-print(result)
+if __name__ == "__main__":
+    messages = " ".join(sys.argv[1:])
+    result = Keccak(messages)
+    print(result.hex())
