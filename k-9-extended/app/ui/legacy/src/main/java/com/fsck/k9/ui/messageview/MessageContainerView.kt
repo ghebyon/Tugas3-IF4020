@@ -84,6 +84,11 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
     private lateinit var message: String
     private lateinit var decryptedMessage: String
 
+    private lateinit var showDecyptText : TextView
+    private lateinit var isVerified : TextView
+    private var isButtonEncryptClicked = false
+    private var tempDecrypt = ""
+
     @get:JvmName("hasHiddenExternalImages")
     var hasHiddenExternalImages = false
         private set
@@ -112,27 +117,47 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
         verifyPublicKeyInput1 = findViewById(R.id.verifPublicKey1)
         verifyPublicKeyInput2 = findViewById(R.id.verifPublicKey2)
         verifyMessage = findViewById(R.id.decryptedVerifyMessage)
+        showDecyptText = findViewById(R.id.decryptedMessage)
+        isVerified = findViewById(R.id.decryptedVerifyMessage)
+
 
         decryptButton.setOnClickListener {
             decryptKey = decryptKeyInput.text.toString()
-            message = parseMessage()
+            val message = parseMessage()
             val getCrypto = GetCrypto(context)
-            decryptedMessage = getCrypto.getDecrypt(message, decryptKey)
-            currentHtmlText = decryptedMessage
-            refreshDisplayedContent()
+            val encrypted = hexToString(getCrypto.getDecrypt(message, decryptKey))
+            currentHtmlText = encrypted
+            showDecyptText.text = encrypted
+            isButtonEncryptClicked = true
+            tempDecrypt = encrypted
         }
 
         verificationButton.setOnClickListener {
-            verifPublicKey1 = verifyPublicKeyInput1.text.toString()
-            verifPublicKey2 = verifyPublicKeyInput1.text.toString()
-            val getECDSA = GetECDSA(context)
-            val valid = getECDSA.verify(decryptedMessage, verifPublicKey1)
-            verifyMessage.text = if (valid) {
-                "\nThe signature is valid"
-            } else {
-                "\nThe signature is violated"
+            if(isButtonEncryptClicked){
+                val verifPublicKey1 = verifyPublicKeyInput1.text.toString()
+                val verifPublicKey2 = verifyPublicKeyInput2.text.toString()
+                val getECDSA = GetECDSA(context)
+                val valid = getECDSA.verify(tempDecrypt, verifPublicKey1, verifPublicKey2)
+                isVerified.text = if (valid) {
+                    "\nThe signature is valid"
+                } else {
+                    "\nThe signature is violated"
+                }
+            }else{
+                decryptKey = decryptKeyInput.text.toString()
+                val message = parseMessage()
+                val getCrypto = GetCrypto(context)
+                val decrypted = hexToString(getCrypto.getDecrypt(message, decryptKey))
+                val verifPublicKey1 = verifyPublicKeyInput1.text.toString()
+                val verifPublicKey2 = verifyPublicKeyInput2.text.toString()
+                val getECDSA = GetECDSA(context)
+                val valid = getECDSA.verify(decrypted, verifPublicKey1, verifPublicKey2)
+                isVerified.text = if (valid) {
+                    "\nThe signature is valid"
+                } else {
+                    "\nThe signature is violated"
+                }
             }
-            refreshDisplayedContent()
         }
     }
 
@@ -588,8 +613,15 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
 
     private fun parseMessage(): String {
         val regex = Regex("<body><div dir=\"auto\">(.*)</div></body>", RegexOption.MULTILINE)
-        val messageFound = currentHtmlText?.let { regex.find(it) }
+        val messageFound = regex.find(currentHtmlText!!)
         val message = messageFound!!.groupValues[1]
         return Html.fromHtml(message).toString()
+    }
+
+    fun hexToString(hexString: String): String {
+        val byteArray = hexString.chunked(2)
+            .map { it.toInt(16).toByte() }
+            .toByteArray()
+        return String(byteArray, Charsets.UTF_8)
     }
 }

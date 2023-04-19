@@ -99,6 +99,13 @@
             android:layout_marginHorizontal="100dp"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <TextView
+            android:id="@+id/decryptedMessage"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:padding="8dp"
+            />
+
         <EditText
             android:id="@+id/verifPublicKey1"
             style="@style/ComposeEditText"
