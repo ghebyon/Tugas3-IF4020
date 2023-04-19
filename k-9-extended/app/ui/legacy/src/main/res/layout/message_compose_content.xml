@@ -12,6 +12,18 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
+        <Switch
+            android:id="@+id/switch1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Digital Signature" />
+
+        <Switch
+            android:id="@+id/switch2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Encrypt Message" />
+
         <include layout="@layout/message_compose_recipients" />
 
         <LinearLayout
