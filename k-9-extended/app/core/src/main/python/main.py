@@ -104,7 +104,7 @@ def verify(signed_message : str, publicKey1 : str, publicKey2 : str):
     publicKey2 = int(publicKey2)
     publicKey = [publicKey1, publicKey2]
     valid = ecdsa.verify(message, publicKey, signature)
-    return {"valid" : valid}
+    return valid
 
 def generateKeyPair():
     ecdsa = ECDSA()
