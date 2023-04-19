@@ -10,7 +10,7 @@ def sign(messages : str, privateKey : str):
     message = ecdsa.strToInt(messages)
     privateKey = int(privateKey)
     signature = ecdsa.sign(message, privateKey)
-    signed_message = message + "\n\nSIGNATURE_BEGIN\n" + hex(signature[0][0])[2:] + "\n" + hex(signature[0][1])[2:] + "\n" + hex(signature[1])[2:] + "\nSIGNATURE_END"
+    signed_message = messages + "\n\nSIGNATURE_BEGIN\n" + hex(signature[0][0])[2:] + "\n" + hex(signature[0][1])[2:] + "\n" + hex(signature[1])[2:] + "\nSIGNATURE_END"
     return {"sign" : signed_message}
 
 @app.get("/verify/{signed_messages}")

@@ -42,6 +42,7 @@ import com.fsck.k9.mailstore.TempFileBody;
 import com.fsck.k9.message.apicrypto.RetrofitClient;
 import com.fsck.k9.message.apicrypto.encrypt;
 import com.fsck.k9.message.python.GetCrypto;
+import com.fsck.k9.message.python.GetECDSA;
 import com.fsck.k9.message.quote.InsertableHtmlContent;
 import org.apache.james.mime4j.util.MimeUtil;
 
@@ -434,13 +435,21 @@ public abstract class MessageBuilder {
     public MessageBuilder setText(String text, Context context, boolean isEncrypted, String encryptKey, boolean isSignatured, String privateKey) {
 
         if(isEncrypted && isSignatured){
+            GetECDSA getECDSA = new GetECDSA(context);
+            String messageSignatured = getECDSA.sign(text, privateKey);
 
+            GetCrypto getCrypto = new GetCrypto(context);
+            String encrypted = getCrypto.runPythonScript(messageSignatured, encryptKey);
+
+            this.text = encrypted;
         }else if(isEncrypted){
             GetCrypto getCrypto = new GetCrypto(context);
             String encrypted = getCrypto.runPythonScript(text, encryptKey);
             this.text = encrypted;
         }else if (isSignatured){
-
+            GetECDSA getECDSA = new GetECDSA(context);
+            String messageSignatured = getECDSA.sign(text, privateKey);
+            this.text = messageSignatured;
         }else{
             this.text = text;
         }
