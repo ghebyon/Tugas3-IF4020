@@ -7,6 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.text.Html
 import android.util.AttributeSet
 import android.view.ContextMenu
 import android.view.ContextMenu.ContextMenuInfo
@@ -18,6 +19,8 @@ import android.view.View.OnCreateContextMenuListener
 import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebView.HitTestResult
+import android.widget.Button
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -32,6 +35,8 @@ import com.fsck.k9.mailstore.AttachmentResolver
 import com.fsck.k9.mailstore.AttachmentViewInfo
 import com.fsck.k9.mailstore.MessageViewInfo
 import com.fsck.k9.message.html.DisplayHtml
+import com.fsck.k9.message.python.GetCrypto
+import com.fsck.k9.message.python.GetECDSA
 import com.fsck.k9.ui.R
 import com.fsck.k9.view.MessageWebView
 import com.fsck.k9.view.MessageWebView.OnPageFinishedListener
@@ -65,6 +70,14 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
     private var attachmentCallback: AttachmentViewCallback? = null
     private var currentAttachmentResolver: AttachmentResolver? = null
 
+    private lateinit var decryptButton: Button
+    private lateinit var verificationButton: Button
+    private lateinit var decryptKeyInput: EditText
+    private lateinit var verifyPublicKeyInput: EditText
+
+    private lateinit var decryptKey: String
+    private lateinit var verifPublicKey: String
+
     @get:JvmName("hasHiddenExternalImages")
     var hasHiddenExternalImages = false
         private set
@@ -87,6 +100,34 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
         unsignedTextContainer = findViewById(R.id.message_unsigned_container)
         unsignedTextDivider = findViewById(R.id.message_unsigned_divider)
         unsignedText = findViewById(R.id.message_unsigned_text)
+        decryptButton = findViewById(R.id.decryptButton)
+        verificationButton = findViewById(R.id.verifButton)
+        decryptKeyInput = findViewById(R.id.decryptionKey)
+        verifyPublicKeyInput = findViewById(R.id.verifPublicKey)
+
+        decryptButton.setOnClickListener {
+            decryptKey = decryptKeyInput.text.toString()
+            val message = parseMessage()
+            val getCrypto = GetCrypto(context)
+            val encrypted = getCrypto.getDecrypt(message, decryptKey)
+            currentHtmlText = encrypted
+        }
+
+        verificationButton.setOnClickListener {
+            decryptKey = decryptKeyInput.text.toString()
+            val message = parseMessage()
+            val getCrypto = GetCrypto(context)
+            val decrypted = getCrypto.getDecrypt(message, decryptKey)
+            currentHtmlText = decrypted
+            verifPublicKey = verifyPublicKeyInput.text.toString()
+            val getECDSA = GetECDSA(context)
+            val valid = getECDSA.verify(decrypted, verifPublicKey)
+            currentHtmlText += if (valid) {
+                "\nThe signature is valid"
+            } else {
+                "\nThe signature is violated"
+            }
+        }
     }
 
     override fun onCreateContextMenu(menu: ContextMenu, view: View, menuInfo: ContextMenuInfo?) {
@@ -537,5 +578,12 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
 
         // DownloadManager only supports http and https URIs
         private val supportedDownloadUriSchemes = setOf("http", "https")
+    }
+
+    private fun parseMessage(): String {
+        val regex = Regex("<body><div dir=\"auto\">(.*)</div></body>", RegexOption.MULTILINE)
+        val messageFound = currentHtmlText?.let { regex.find(it) }
+        val message = messageFound!!.groupValues[1]
+        return Html.fromHtml(message).toString()
     }
 }

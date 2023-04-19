@@ -34,6 +34,20 @@ public class GetECDSA {
         return output;
     }
 
+    public Boolean verify(String signed_message, String publicKey) {
+        if (!Python.isStarted()) {
+            Python.start(new AndroidPlatform(mContext));
+        }
+
+        Python py = Python.getInstance();
+        PyObject pyObject = py.getModule("main");
+        PyObject result = pyObject.callAttr("verify", signed_message, publicKey);
+
+        Boolean output = result.toBoolean();
+
+        return output;
+    }
+
     public List<String> generateKeyPair() {
         List<String> output = new ArrayList<>();
         if (!Python.isStarted()) {

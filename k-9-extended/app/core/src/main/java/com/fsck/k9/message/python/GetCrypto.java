@@ -14,7 +14,7 @@ public class GetCrypto {
         mContext = context;
     }
 
-    public String runPythonScript(String message, String key) {
+    public String getEncrypt(String message, String key) {
         if (!Python.isStarted()) {
             Python.start(new AndroidPlatform(mContext));
         }
@@ -22,6 +22,20 @@ public class GetCrypto {
         Python py = Python.getInstance();
         PyObject pyObject = py.getModule("main");
         PyObject result = pyObject.callAttr("encrypt", message, key );
+
+        String output = result.toString();
+
+        return output;
+    }
+
+    public String getDecrypt(String message, String key) {
+        if (!Python.isStarted()) {
+            Python.start(new AndroidPlatform(mContext));
+        }
+
+        Python py = Python.getInstance();
+        PyObject pyObject = py.getModule("main");
+        PyObject result = pyObject.callAttr("decrypt", message, key );
 
         String output = result.toString();
 

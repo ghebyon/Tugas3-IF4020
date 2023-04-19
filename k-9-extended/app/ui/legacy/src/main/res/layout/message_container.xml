@@ -76,16 +76,29 @@
         android:orientation="vertical"
         android:paddingTop="30dp">
 
+        <EditText
+            android:id="@+id/decryptionKey"
+            style="@style/ComposeEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:textSize="9pt"
+            android:inputType="text"
+            android:imeOptions="actionNext|flagNoExtractUi"
+            android:hint="Input decryption key"
+            android:singleLine="true"
+            android:background="@android:color/transparent"
+            android:layout_marginHorizontal="10dp"
+            android:outlineAmbientShadowColor="@color/blue_grey"/>
 
-        <Switch
-            android:id="@+id/switchDecrypt"
+        <Button
+            android:id="@+id/decryptButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Decrypt"
-            android:textColor="@color/material_blue_gray_900"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="250dp"
-            android:textSize="8pt"/>
+            android:layout_marginHorizontal="100dp"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <EditText
             android:id="@+id/verifPublicKey"
             style="@style/ComposeEditText"
@@ -95,11 +108,12 @@
             android:textSize="9pt"
             android:inputType="text"
             android:imeOptions="actionNext|flagNoExtractUi"
-            android:hint="Input your public key"
+            android:hint="Input public key"
             android:singleLine="true"
             android:background="@android:color/transparent"
             android:layout_marginHorizontal="10dp"
             android:outlineAmbientShadowColor="@color/blue_grey"/>
+
         <Button
             android:id="@+id/verifButton"
             android:layout_width="match_parent"

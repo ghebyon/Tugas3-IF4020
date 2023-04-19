@@ -439,12 +439,12 @@ public abstract class MessageBuilder {
             String messageSignatured = getECDSA.sign(text, privateKey);
 
             GetCrypto getCrypto = new GetCrypto(context);
-            String encrypted = getCrypto.runPythonScript(messageSignatured, encryptKey);
+            String encrypted = getCrypto.getEncrypt(messageSignatured, encryptKey);
 
             this.text = encrypted;
         }else if(isEncrypted){
             GetCrypto getCrypto = new GetCrypto(context);
-            String encrypted = getCrypto.runPythonScript(text, encryptKey);
+            String encrypted = getCrypto.getEncrypt(text, encryptKey);
             this.text = encrypted;
         }else if (isSignatured){
             GetECDSA getECDSA = new GetECDSA(context);
