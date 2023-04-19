@@ -431,11 +431,16 @@ public abstract class MessageBuilder {
         return this;
     }
 
-    public MessageBuilder setText(String text, Context context, boolean isEncrypted) {
-        if(isEncrypted){
+    public MessageBuilder setText(String text, Context context, boolean isEncrypted, String encryptKey, boolean isSignatured, String privateKey) {
+
+        if(isEncrypted && isSignatured){
+
+        }else if(isEncrypted){
             GetCrypto getCrypto = new GetCrypto(context);
-            String encrypted = getCrypto.runPythonScript(text, "if4020-kriptografi2023");
+            String encrypted = getCrypto.runPythonScript(text, encryptKey);
             this.text = encrypted;
+        }else if (isSignatured){
+
         }else{
             this.text = text;
         }

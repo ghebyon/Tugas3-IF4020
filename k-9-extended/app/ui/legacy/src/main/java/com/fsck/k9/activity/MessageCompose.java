@@ -28,8 +28,11 @@ import android.os.Parcelable;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
+
+import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
@@ -508,30 +511,48 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         }
 
         this.encryptedSwitch = (Switch) findViewById(R.id.switchEncrypt);
-<<<<<<< Updated upstream
-=======
         this.keyEncryptionInput = (TextInputEditText) findViewById(R.id.keyEncryptInput);
->>>>>>> Stashed changes
 
         this.encryptedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isEncrypted = isChecked; // assign isChecked to the global variable switchState
+                if (isEncrypted) {
+                    keyEncryptionInput.setVisibility(View.VISIBLE);
+
+//                    keyEncryptionInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//                        @Override
+//                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                            if (actionId == EditorInfo.IME_ACTION_DONE) {
+//                                keyEncryption = keyEncryptionInput.getText().toString();
+//                                Log.i("TESTINGENCRYPTKEY", keyEncryption);
+//                                return true;
+//                            }
+//                            return false;
+//                        }
+//                    });
+                    keyEncryptionInput.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            //
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            keyEncryption = keyEncryptionInput.getText().toString();
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable editable) {
+                            //
+                        }
+                    });
+                }else{
+                    keyEncryptionInput.setVisibility(View.GONE);
+                }
             }
         });
-        if (isEncrypted) {
-            keyEncryptionInput.setVisibility(View.VISIBLE);
-            keyEncryptionInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        keyEncryption = keyEncryptionInput.getText().toString();
-                        return true;
-                    }
-                    return false;
-                }
-            });
-        }
+
 
         this.signatureSwitch = (Switch) findViewById(R.id.switchSignature);
         this.privateKeySignatureInput = (TextInputEditText) findViewById(R.id.privateKeySignatureInput);
@@ -540,21 +561,41 @@ public class MessageCompose extends K9Activity implements OnClickListener,
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 isSignatured = isChecked; // assign isChecked to the global variable switchState
+                if (isSignatured) {
+                    privateKeySignatureInput.setVisibility(View.VISIBLE);
+//                    privateKeySignatureInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//                        @Override
+//                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                            if (actionId == EditorInfo.IME_ACTION_DONE) {
+//                                privateKeySignature = privateKeySignatureInput.getText().toString();
+//                                return true;
+//                            }
+//                            return false;
+//                        }
+//                    });
+
+                    privateKeySignatureInput.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            privateKeySignature = privateKeySignatureInput.getText().toString();
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable editable) {
+
+                        }
+                    });
+                }else{
+                    privateKeySignatureInput.setVisibility(View.GONE);
+                }
             }
         });
-        if (isSignatured) {
-            keyEncryptionInput.setVisibility(View.VISIBLE);
-            privateKeySignatureInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        privateKeySignature = privateKeySignatureInput.getText().toString();
-                        return true;
-                    }
-                    return false;
-                }
-            });
-        }
+
     }
 
     /**
@@ -791,7 +832,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 .setIdentity(identity)
                 .setReplyTo(replyToPresenter.getAddresses())
                 .setMessageFormat(currentMessageFormat)
-                .setText(CrLfConverter.toCrLf(messageContentView.getText()), getApplicationContext(), isEncrypted)
+                .setText(CrLfConverter.toCrLf(messageContentView.getText()), getApplicationContext(), isEncrypted, keyEncryption, isSignatured, privateKeySignature)
                 .setAttachments(attachmentPresenter.getAttachments())
                 .setInlineAttachments(attachmentPresenter.getInlineAttachments())
                 .setSignature(CrLfConverter.toCrLf(signatureView.getText()))

@@ -22,13 +22,14 @@
             android:id="@+id/privateKeySignature"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+
             >
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/privateKeySignatureInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Private Key" />
+                android:hint="Private Key"
+                android:visibility="gone"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Switch
@@ -41,13 +42,13 @@
             android:id="@+id/keyEncrypt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
             >
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/keyEncryptInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Encryption Key" />
+                android:hint="Encryption Key"
+                android:visibility="gone"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <include layout="@layout/message_compose_recipients" />
