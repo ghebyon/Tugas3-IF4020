@@ -55,11 +55,7 @@
                 android:background="#d55" />
 
         </LinearLayout>
-        <Switch
-            android:id="@+id/switchDecrypt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Decrypt" />
+
         <TextView
             android:id="@+id/message_unsigned_text"
             android:layout_height="wrap_content"
@@ -67,21 +63,43 @@
             android:padding="8dp"
             tools:text="Unsigned text content"
             />
+
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/optionEncryptedMail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingTop="30dp">
+
+
+        <Switch
+            android:id="@+id/switchDecrypt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Decrypt"
+            android:textColor="@color/material_blue_gray_900"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="250dp"
+            android:textSize="8pt"/>
         <EditText
             android:id="@+id/verifPublicKey"
             style="@style/ComposeEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:textSize="9pt"
             android:inputType="text"
             android:imeOptions="actionNext|flagNoExtractUi"
             android:hint="Input your public key"
             android:singleLine="true"
-            android:background="@android:color/transparent"/>
-
-
-
-
+            android:background="@android:color/transparent"
+            android:layout_marginHorizontal="10dp"
+            android:outlineAmbientShadowColor="@color/blue_grey"/>
         <Button
             android:id="@+id/verifButton"
             android:layout_width="match_parent"
@@ -97,10 +115,7 @@
             android:text=""
             tools:visibility="gone"/>
 
-
-
     </LinearLayout>
-
     <!-- Attachments area -->
     <LinearLayout
         android:id="@+id/attachments_container"
