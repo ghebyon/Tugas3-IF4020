@@ -26,7 +26,7 @@ def printBytesInList(val : bytes):
         list.append(x)
     print(list)
 
-def Keccak(message : str, ):
+def Keccak(message : str ):
     # SHA3-256
     digest = 256
     r = 1088
@@ -133,4 +133,5 @@ def rot(x, y):
 if __name__ == "__main__":
     messages = " ".join(sys.argv[1:])
     result = Keccak(messages)
+    print(result)
     print(result.hex())

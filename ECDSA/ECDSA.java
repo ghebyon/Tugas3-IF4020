@@ -71,7 +71,7 @@ public class ECDSA {
     public static boolean verify(byte[] hash, BigInteger[] signature, ECCPoint publicKey) {
         BigInteger r = signature[0];
         BigInteger s = signature[1];
-        if (r.compareTo(BigInteger.ONE) < 0 || r.compareTo(n) >= 0 || s.compareTo(BigInteger.ONE) < 0 || s.compareTo(n) >= 0) {
+        if (r.compareTo(BigInteger.ZERO) <= 0 || r.compareTo(n) >= 0 || s.compareTo(BigInteger.ZERO) <= 0 || s.compareTo(n) >= 0) {
             return false;
         }
         BigInteger e = new BigInteger(1, hash);
