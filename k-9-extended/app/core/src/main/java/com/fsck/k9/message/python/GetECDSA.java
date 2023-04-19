@@ -34,14 +34,14 @@ public class GetECDSA {
         return output;
     }
 
-    public Boolean verify(String signed_message, String publicKey) {
+    public Boolean verify(String signed_message, String publicKey1, String publicKey2) {
         if (!Python.isStarted()) {
             Python.start(new AndroidPlatform(mContext));
         }
 
         Python py = Python.getInstance();
         PyObject pyObject = py.getModule("main");
-        PyObject result = pyObject.callAttr("verify", signed_message, publicKey);
+        PyObject result = pyObject.callAttr("verify", signed_message, publicKey1, publicKey2);
 
         Boolean output = result.toBoolean();
 

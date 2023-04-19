@@ -34,6 +34,7 @@ import com.fsck.k9.mail.Address
 import com.fsck.k9.mailstore.AttachmentResolver
 import com.fsck.k9.mailstore.AttachmentViewInfo
 import com.fsck.k9.mailstore.MessageViewInfo
+import com.fsck.k9.message.apicrypto.decrypt
 import com.fsck.k9.message.html.DisplayHtml
 import com.fsck.k9.message.python.GetCrypto
 import com.fsck.k9.message.python.GetECDSA
@@ -73,10 +74,15 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
     private lateinit var decryptButton: Button
     private lateinit var verificationButton: Button
     private lateinit var decryptKeyInput: EditText
-    private lateinit var verifyPublicKeyInput: EditText
+    private lateinit var verifyPublicKeyInput1: EditText
+    private lateinit var verifyPublicKeyInput2: EditText
+    private lateinit var verifyMessage: TextView
 
     private lateinit var decryptKey: String
-    private lateinit var verifPublicKey: String
+    private lateinit var verifPublicKey1: String
+    private lateinit var verifPublicKey2: String
+    private lateinit var message: String
+    private lateinit var decryptedMessage: String
 
     @get:JvmName("hasHiddenExternalImages")
     var hasHiddenExternalImages = false
@@ -103,30 +109,30 @@ class MessageContainerView(context: Context, attrs: AttributeSet?) :
         decryptButton = findViewById(R.id.decryptButton)
         verificationButton = findViewById(R.id.verifButton)
         decryptKeyInput = findViewById(R.id.decryptionKey)
-        verifyPublicKeyInput = findViewById(R.id.verifPublicKey)
+        verifyPublicKeyInput1 = findViewById(R.id.verifPublicKey1)
+        verifyPublicKeyInput2 = findViewById(R.id.verifPublicKey2)
+        verifyMessage = findViewById(R.id.decryptedVerifyMessage)
 
         decryptButton.setOnClickListener {
             decryptKey = decryptKeyInput.text.toString()
-            val message = parseMessage()
+            message = parseMessage()
             val getCrypto = GetCrypto(context)
-            val encrypted = getCrypto.getDecrypt(message, decryptKey)
-            currentHtmlText = encrypted
+            decryptedMessage = getCrypto.getDecrypt(message, decryptKey)
+            currentHtmlText = decryptedMessage
+            refreshDisplayedContent()
         }
 
         verificationButton.setOnClickListener {
-            decryptKey = decryptKeyInput.text.toString()
-            val message = parseMessage()
-            val getCrypto = GetCrypto(context)
-            val decrypted = getCrypto.getDecrypt(message, decryptKey)
-            currentHtmlText = decrypted
-            verifPublicKey = verifyPublicKeyInput.text.toString()
+            verifPublicKey1 = verifyPublicKeyInput1.text.toString()
+            verifPublicKey2 = verifyPublicKeyInput1.text.toString()
             val getECDSA = GetECDSA(context)
-            val valid = getECDSA.verify(decrypted, verifPublicKey)
-            currentHtmlText += if (valid) {
+            val valid = getECDSA.verify(decryptedMessage, verifPublicKey1)
+            verifyMessage.text = if (valid) {
                 "\nThe signature is valid"
             } else {
                 "\nThe signature is violated"
             }
+            refreshDisplayedContent()
         }
     }
 

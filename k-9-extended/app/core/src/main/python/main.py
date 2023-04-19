@@ -91,7 +91,7 @@ def sign(messages : str, privateKey : str):
     return signed_message
 
 
-def verify(signed_message : str, publicKey : str):
+def verify(signed_message : str, publicKey1 : str, publicKey2 : str):
     message = signed_message.split("\n\nSIGNATURE_BEGIN")[0]
     signature_string = signed_message.split("\n\nSIGNATURE_BEGIN")[1].split("\nSIGNATURE_END")[0].split("\n")
     signature = [[0, 0], 0]
@@ -100,7 +100,9 @@ def verify(signed_message : str, publicKey : str):
     signature[1] = int(signature_string[3], 16)
     ecdsa = ECDSA()
     message = ecdsa.strToInt(message)
-    publicKey = int(publicKey)
+    publicKey1 = int(publicKey1)
+    publicKey2 = int(publicKey2)
+    publicKey = [publicKey1, publicKey2]
     valid = ecdsa.verify(message, publicKey, signature)
     return {"valid" : valid}
 

@@ -100,7 +100,22 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
-            android:id="@+id/verifPublicKey"
+            android:id="@+id/verifPublicKey1"
+            style="@style/ComposeEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:textSize="9pt"
+            android:inputType="text"
+            android:imeOptions="actionNext|flagNoExtractUi"
+            android:hint="Input public key"
+            android:singleLine="true"
+            android:background="@android:color/transparent"
+            android:layout_marginHorizontal="10dp"
+            android:outlineAmbientShadowColor="@color/blue_grey"/>
+
+        <EditText
+            android:id="@+id/verifPublicKey2"
             style="@style/ComposeEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
