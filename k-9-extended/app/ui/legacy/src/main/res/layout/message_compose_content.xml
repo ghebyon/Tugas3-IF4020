@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:scrollbarStyle="insideOverlay"
     android:fillViewport="true">
 
@@ -13,16 +13,42 @@
         android:orientation="vertical" >
 
         <Switch
-            android:id="@+id/switch1"
+            android:id="@+id/switchSignature"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Digital Signature" />
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/privateKeySignature"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/privateKeySignatureInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Private Key" />
+        </com.google.android.material.textfield.TextInputLayout>
+
         <Switch
-            android:id="@+id/switch2"
+            android:id="@+id/switchEncrypt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Encrypt Message" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/keyEncrypt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/keyEncryptInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Encryption Key" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <include layout="@layout/message_compose_recipients" />
 
