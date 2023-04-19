@@ -32,6 +32,33 @@
                 android:visibility="gone"/>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <Button
+            android:id="@+id/buttonKeyGenerator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Generate Key"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/privateKeyGenerator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/publicKeyGenerator1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/publicKeyGenerator2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
+
+
         <Switch
             android:id="@+id/switchEncrypt"
             android:layout_width="match_parent"
@@ -50,6 +77,8 @@
                 android:hint="Encryption Key"
                 android:visibility="gone"/>
         </com.google.android.material.textfield.TextInputLayout>
+
+
 
         <include layout="@layout/message_compose_recipients" />
 

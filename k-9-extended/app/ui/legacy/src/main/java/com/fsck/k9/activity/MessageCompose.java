@@ -45,6 +45,7 @@ import android.view.View.OnFocusChangeListener;
 import android.view.ViewStub;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -112,6 +113,7 @@ import com.fsck.k9.message.PgpMessageBuilder;
 import com.fsck.k9.message.QuotedTextMode;
 import com.fsck.k9.message.SimpleMessageBuilder;
 import com.fsck.k9.message.SimpleMessageFormat;
+import com.fsck.k9.message.python.GetECDSA;
 import com.fsck.k9.search.LocalSearch;
 import com.fsck.k9.ui.R;
 import com.fsck.k9.ui.base.K9Activity;
@@ -264,6 +266,12 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private String keyEncryption;
     private String privateKeySignature;
+
+    private Button generateKeyPair;
+
+    private TextView privateKeyGenerator;
+    private TextView publicKeyGenerator1;
+    private TextView publicKeyGenerator2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -519,18 +527,6 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 isEncrypted = isChecked; // assign isChecked to the global variable switchState
                 if (isEncrypted) {
                     keyEncryptionInput.setVisibility(View.VISIBLE);
-
-//                    keyEncryptionInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//                        @Override
-//                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                            if (actionId == EditorInfo.IME_ACTION_DONE) {
-//                                keyEncryption = keyEncryptionInput.getText().toString();
-//                                Log.i("TESTINGENCRYPTKEY", keyEncryption);
-//                                return true;
-//                            }
-//                            return false;
-//                        }
-//                    });
                     keyEncryptionInput.addTextChangedListener(new TextWatcher() {
                         @Override
                         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -556,6 +552,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
         this.signatureSwitch = (Switch) findViewById(R.id.switchSignature);
         this.privateKeySignatureInput = (TextInputEditText) findViewById(R.id.privateKeySignatureInput);
+        this.generateKeyPair = (Button) findViewById(R.id.buttonKeyGenerator);
+        this.privateKeyGenerator = (TextView) findViewById(R.id.privateKeyGenerator);
+        this.publicKeyGenerator1 = (TextView) findViewById(R.id.publicKeyGenerator1);
+        this.publicKeyGenerator2 = (TextView) findViewById(R.id.publicKeyGenerator2);
 
         this.signatureSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -563,17 +563,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 isSignatured = isChecked; // assign isChecked to the global variable switchState
                 if (isSignatured) {
                     privateKeySignatureInput.setVisibility(View.VISIBLE);
-//                    privateKeySignatureInput.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//                        @Override
-//                        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                            if (actionId == EditorInfo.IME_ACTION_DONE) {
-//                                privateKeySignature = privateKeySignatureInput.getText().toString();
-//                                return true;
-//                            }
-//                            return false;
-//                        }
-//                    });
-
+                    generateKeyPair.setVisibility(View.VISIBLE);
                     privateKeySignatureInput.addTextChangedListener(new TextWatcher() {
                         @Override
                         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -592,7 +582,27 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                     });
                 }else{
                     privateKeySignatureInput.setVisibility(View.GONE);
+                    generateKeyPair.setVisibility(View.GONE);
+                    privateKeyGenerator.setVisibility(View.GONE);
+                    publicKeyGenerator1.setVisibility(View.GONE);
+                    publicKeyGenerator2.setVisibility(View.GONE);
                 }
+            }
+        });
+
+
+
+        this.generateKeyPair.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GetECDSA getECDSA = new GetECDSA(getApplicationContext());
+                List<String> genKey = getECDSA.generateKeyPair();
+                privateKeyGenerator.setVisibility(View.VISIBLE);
+                privateKeyGenerator.setText("Private Key : " + genKey.get(0));
+                publicKeyGenerator1.setVisibility(View.VISIBLE);
+                publicKeyGenerator1.setText("Public Key : " +  genKey.get(1));
+                publicKeyGenerator2.setVisibility(View.VISIBLE);
+                publicKeyGenerator2.setText("Public Key : " +  genKey.get(2));
             }
         });
 
