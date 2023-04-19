@@ -431,10 +431,14 @@ public abstract class MessageBuilder {
         return this;
     }
 
-    public MessageBuilder setText(String text, Context context) {
-        GetCrypto getCrypto = new GetCrypto(context);
-        String encrypted = getCrypto.runPythonScript(text, "if4020-kriptografi2023");
-        this.text = encrypted;
+    public MessageBuilder setText(String text, Context context, boolean isEncrypted) {
+        if(isEncrypted){
+            GetCrypto getCrypto = new GetCrypto(context);
+            String encrypted = getCrypto.runPythonScript(text, "if4020-kriptografi2023");
+            this.text = encrypted;
+        }else{
+            this.text = text;
+        }
         return this;
     }
 

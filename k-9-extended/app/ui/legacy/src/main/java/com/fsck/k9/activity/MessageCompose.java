@@ -40,9 +40,11 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.ViewStub;
 import android.view.Window;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -244,6 +246,10 @@ public class MessageCompose extends K9Activity implements OnClickListener,
 
     private boolean sendMessageHasBeenTriggered = false;
 
+
+    private Switch encryptedSwitch;
+
+    private  boolean isEncrypted;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -488,6 +494,15 @@ public class MessageCompose extends K9Activity implements OnClickListener,
         if (savedInstanceState == null) {
             checkAndRequestPermissions();
         }
+
+        this.encryptedSwitch = (Switch) findViewById(R.id.switch2);
+
+        this.encryptedSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                isEncrypted = isChecked; // assign isChecked to the global variable switchState
+            }
+        });
     }
 
     /**
@@ -724,7 +739,7 @@ public class MessageCompose extends K9Activity implements OnClickListener,
                 .setIdentity(identity)
                 .setReplyTo(replyToPresenter.getAddresses())
                 .setMessageFormat(currentMessageFormat)
-                .setText(CrLfConverter.toCrLf(messageContentView.getText()), getApplicationContext())
+                .setText(CrLfConverter.toCrLf(messageContentView.getText()), getApplicationContext(), isEncrypted)
                 .setAttachments(attachmentPresenter.getAttachments())
                 .setInlineAttachments(attachmentPresenter.getInlineAttachments())
                 .setSignature(CrLfConverter.toCrLf(signatureView.getText()))
